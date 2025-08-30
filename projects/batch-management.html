@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch Management System - Neo Factory | Pattharapol Choonarong</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Custom web-based SCADA alternative for Neo Factory - License-free batch management system by Pattharapol Choonarong">
+    <meta name="keywords" content="Batch Management, SCADA, Neo Factory, Web-based SCADA, SAP Interface, Industrial Software">
+    <meta name="author" content="Pattharapol Choonarong">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Batch Management System - Neo Factory">
+    <meta property="og:description" content="License-free web-based SCADA alternative that cut software costs by over 50%">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="../img/project/Batch Management System 1.jpg">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 16rem;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .project-image:hover {
+            opacity: 0.8;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-green-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-white font-bold text-xl">
+                    <a href="../index.html" class="hover:text-green-200 transition-colors duration-300">← Back to Resume</a>
+                </div>
+                <div class="text-white text-lg">
+                    Batch Management System
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-16 bg-gradient-to-r from-green-600 to-teal-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl lg:text-6xl font-bold mb-6">Batch Management System</h1>
+            <h2 class="text-2xl lg:text-3xl mb-8 text-green-200">Neo Factory</h2>
+            <p class="text-xl leading-relaxed max-w-4xl mx-auto">
+                Built a fully customizable, Interface SAP, license-free web-based SCADA alternative tailored to specific production needs.
+            </p>
+            <div class="mt-8 bg-white bg-opacity-20 rounded-lg p-6 max-w-2xl mx-auto">
+                <p class="text-lg font-semibold">
+                    <strong>Result:</strong> Cut SCADA-related software costs by over 50% and achieved better system flexibility than off-the-shelf solutions.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Images -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-12 text-center">System Interface & Features</h2>
+            
+            <div class="image-grid">
+                <div>
+                    <img src="../img/project/Batch Management System 1.jpg" alt="Main Control Interface" 
+                         class="project-image" onclick="openModal('../img/project/Batch Management System 1.jpg')">
+                    <p class="text-center text-gray-600 mt-2 font-semibold">Main Control Interface</p>
+                </div>
+                
+                <div>
+                    <img src="../img/project/Batch Management System 2.jpg" alt="Process Monitoring" 
+                         class="project-image" onclick="openModal('../img/project/Batch Management System 2.jpg')">
+                    <p class="text-center text-gray-600 mt-2 font-semibold">Process Monitoring Dashboard</p>
+                </div>
+                
+                <div>
+                    <img src="../img/project/Batch Management System 3.jpg" alt="Recipe Management" 
+                         class="project-image" onclick="openModal('../img/project/Batch Management System 3.jpg')">
+                    <p class="text-center text-gray-600 mt-2 font-semibold">Recipe Management System</p>
+                </div>
+                
+                <div>
+                    <img src="../img/project/Batch Management System 4.jpg" alt="SAP Integration" 
+                         class="project-image" onclick="openModal('../img/project/Batch Management System 4.jpg')">
+                    <p class="text-center text-gray-600 mt-2 font-semibold">SAP Integration Interface</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-4">
+                <a href="../index.html" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors duration-300">
+                    ← Back to Resume
+                </a>
+            </div>
+            <p class="text-gray-300">Batch Management System - Developed by Pattharapol Choonarong for Neo Factory</p>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function openModal(imageSrc) {
+            console.log('Opening modal for:', imageSrc);
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            if (!modal || !modalImg) {
+                console.error('Modal elements not found!');
+                return;
+            }
+            
+            modalImg.src = imageSrc;
+            modalImg.alt = 'Project Image';
+            modal.style.display = 'block';
+            modal.style.opacity = '0';
+            modal.offsetHeight;
+            modal.style.transition = 'opacity 0.3s ease';
+            modal.style.opacity = '1';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            if (modal) {
+                modal.style.transition = 'opacity 0.3s ease';
+                modal.style.opacity = '0';
+                setTimeout(() => { modal.style.display = 'none'; }, 300);
+                document.body.style.overflow = '';
+                console.log('Modal closed');
+            }
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('imageModal');
+                if (modal && (modal.style.display === 'block' || modal.style.opacity === '1')) {
+                    closeModal();
+                }
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const projectImages = document.querySelectorAll('.project-image');
+            console.log('Found', projectImages.length, 'project images');
+            
+            projectImages.forEach((img, index) => {
+                img.removeAttribute('onclick');
+                img.style.position = 'relative';
+                img.style.zIndex = '1000';
+                img.style.transition = 'all 0.3s ease';
+                img.style.cursor = 'pointer';
+                
+                img.addEventListener('click', function(e) {
+                    console.log(`Project image ${index + 1} clicked:`, this.src);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(this.src);
+                });
+                
+                img.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.opacity = '0.9';
+                });
+                
+                img.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.opacity = '1';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
