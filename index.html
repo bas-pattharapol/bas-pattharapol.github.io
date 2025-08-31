@@ -1020,8 +1020,8 @@
                         <h3 class="text-2xl font-bold text-yellow-700 group-hover:text-yellow-800">National Level</h3>
                     </div>
                     <div class="space-y-3">
-                        <div class="bg-white bg-opacity-60 rounded-lg p-3 hover:bg-opacity-80 transition-all duration-300">
-                            <div class="flex items-center">
+                        <div class="bg-white bg-opacity-60 rounded-lg p-3 hover:bg-opacity-80 transition-all duration-300" >
+                            <div class="flex items-center" >
                                 <img src="./img/profile/awards_2.jpg" alt="Microcontroller Competition" class="w-16 h-16 object-cover rounded-lg mr-3 cursor-pointer" onclick="openModal('./img/profile/awards_2.jpg')">
                                 <div class="flex-1">
                                     <p class="font-bold text-gray-800">1st Runner-Up</p>
@@ -1452,45 +1452,79 @@
                 return;
             }
             
-            // Set image source first
-            modalImg.src = imageSrc;
-            modalImg.alt = 'Award Image';
+            // First completely clear and reset the image
+            modalImg.src = '';
+            modalImg.alt = '';
+            modalImg.removeAttribute('src');
+            modalImg.style.display = 'none';
             
-            // Show modal with fade effect
-            modal.style.display = 'block';
-            modal.style.opacity = '0';
+            // Force browser to process the clearing
+            modalImg.offsetHeight;
             
-            // Force reflow to ensure display block is applied
-            modal.offsetHeight;
+            // Create a new image element to ensure fresh loading
+            const tempImg = new Image();
             
-            // Fade in
-            modal.style.transition = 'opacity 0.3s ease';
-            modal.style.opacity = '1';
+            // When the new image loads successfully
+            tempImg.onload = function() {
+                console.log('Image loaded successfully:', imageSrc);
+                
+                // Now set the modal image
+                modalImg.style.display = 'block';
+                modalImg.src = tempImg.src;
+                modalImg.alt = 'Award Image';
+                
+                // Show modal with fade effect
+                modal.style.display = 'block';
+                modal.style.opacity = '0';
+                
+                // Force reflow to ensure display block is applied
+                modal.offsetHeight;
+                
+                // Fade in
+                modal.style.transition = 'opacity 0.3s ease';
+                modal.style.opacity = '1';
+                
+                console.log('Modal should be visible now');
+                console.log('Modal display:', modal.style.display);
+                console.log('Image src set to:', modalImg.src);
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+            };
             
-            console.log('Modal should be visible now');
-            console.log('Modal display:', modal.style.display);
-            console.log('Image src set to:', modalImg.src);
+            // Handle image loading errors
+            tempImg.onerror = function() {
+                console.error('Failed to load image:', imageSrc);
+                alert('ไม่สามารถโหลดรูปภาพได้: ' + imageSrc);
+            };
             
-            // Prevent body scroll
-            document.body.style.overflow = 'hidden';
+            // Start loading the image with cache-busting parameter
+            tempImg.src = imageSrc + '?t=' + new Date().getTime();
         }
 
         function closeModal() {
             const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
             if (modal) {
                 // Fade out
                 modal.style.transition = 'opacity 0.3s ease';
                 modal.style.opacity = '0';
                 
-                // Hide after fade
+                // Hide after fade and clear image
                 setTimeout(() => {
                     modal.style.display = 'none';
+                    // Clear image source completely when closing
+                    if (modalImg) {
+                        modalImg.src = '';
+                        modalImg.alt = '';
+                        modalImg.removeAttribute('src');
+                    }
                 }, 300);
                 
                 // Restore body scroll
                 document.body.style.overflow = '';
                 
-                console.log('Modal closed');
+                console.log('Modal closed and image cleared');
             }
         }
 
@@ -1543,201 +1577,82 @@
                 });
             });
             
-            // Add backup event listeners for award images
-            const awardImages = document.querySelectorAll('img[src*="awards_"], img[src*="achievements_"]');
-            console.log('=== Initial setup ===');
-            console.log('Found images:', awardImages.length);
+            // Test modal functionality
+            console.log('Page loaded - Testing modal...');
             
-            awardImages.forEach((img, index) => {
+            // Test basic modal function
+            window.testModal = function() {
+                console.log('Testing modal...');
+                openModal('./img/profile/awards_1.jpg');
+            };
+            
+            // Enhanced event listeners for award images
+            const images = document.querySelectorAll('img[src*="awards_"], img[src*="achievements_"]');
+            console.log('=== SETTING UP IMAGE CLICKS ===');
+            console.log('Found', images.length, 'award/achievement images');
+            
+            images.forEach((img, index) => {
                 console.log(`Setting up image ${index + 1}:`, img.src);
                 
-                // Remove existing onclick to avoid conflicts
+                // Clear any existing event listeners and onclick
                 img.removeAttribute('onclick');
                 
-                // Force higher z-index and pointer events
-                img.style.position = 'relative';
-                img.style.zIndex = '1000';
-                img.style.pointerEvents = 'auto';
-                img.style.transition = 'all 0.3s ease';
-                img.style.cursor = 'pointer';
-                img.style.userSelect = 'none';
-                
-                // Add multiple event listeners for different events
+                // Add stronger event handler
                 img.addEventListener('click', function(e) {
-                    console.log(`=== CLICK EVENT ${index + 1} ===`);
+                    console.log(`=== IMAGE CLICK ${index + 1} ===`);
+                    console.log('Clicked image:', this.src);
                     console.log('Event target:', e.target);
-                    console.log('Image source:', this.src);
-                    console.log('Parent elements:', e.target.parentElement, e.target.parentElement?.parentElement);
                     
-                    e.preventDefault();
+                    // Don't prevent default, just stop propagation
                     e.stopPropagation();
-                    e.stopImmediatePropagation();
                     
-                    console.log('Calling openModal...');
+                    console.log('Calling openModal with:', this.src);
                     openModal(this.src);
                     
                     return false;
                 }, true); // Use capture phase
                 
-                // Add bubble phase listener as backup
-                img.addEventListener('click', function(e) {
-                    console.log(`=== BUBBLE PHASE CLICK ${index + 1} ===`);
-                    e.preventDefault();
-                    e.stopPropagation();
-                    openModal(this.src);
-                    return false;
-                }, false);
-                
-                // Add mousedown for more coverage
-                img.addEventListener('mousedown', function(e) {
-                    console.log('Mousedown on image:', this.src);
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-                
-                // Add hover effects
+                // Add visual feedback
                 img.addEventListener('mouseenter', function() {
+                    this.style.opacity = '0.7';
                     this.style.transform = 'scale(1.05)';
-                    this.style.opacity = '0.8';
-                    this.style.zIndex = '1001';
                     console.log('Hovering over image:', this.src);
                 });
                 
                 img.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
                     this.style.opacity = '1';
-                    this.style.zIndex = '1000';
+                    this.style.transform = 'scale(1)';
                 });
                 
-                // Disable pointer events on immediate parent
-                const parent = img.parentElement;
-                if (parent) {
-                    parent.style.pointerEvents = 'none';
-                    console.log('Disabled pointer events on parent for image:', img.src);
-                }
+                // Make sure image is clickable
+                img.style.cursor = 'pointer';
+                img.style.pointerEvents = 'auto';
+                img.style.position = 'relative';
+                img.style.zIndex = '1000';
             });
             
-            console.log('=== Event listeners attached to', awardImages.length, 'images ===');
+            console.log('=== IMAGE SETUP COMPLETE ===');
             
-            // Fix parent containers that might block clicks
-            const problemContainers = document.querySelectorAll('.achievement-card .space-y-3, .achievement-card .grid, .achievement-card .bg-white');
-            console.log('Found problematic containers:', problemContainers.length);
+            // Add test button temporarily
+            const testBtn = document.createElement('button');
+            testBtn.innerHTML = 'Test Modal';
+            testBtn.style.position = 'fixed';
+            testBtn.style.top = '10px';
+            testBtn.style.right = '10px';
+            testBtn.style.zIndex = '9999';
+            testBtn.style.padding = '10px';
+            testBtn.style.backgroundColor = '#3B82F6';
+            testBtn.style.color = 'white';
+            testBtn.style.border = 'none';
+            testBtn.style.borderRadius = '5px';
+            testBtn.style.cursor = 'pointer';
             
-            problemContainers.forEach((container, index) => {
-                // Allow clicks to pass through to child images
-                container.style.pointerEvents = 'none';
-                console.log(`Fixed container ${index + 1}`);
-                
-                // But re-enable for text elements
-                const textElements = container.querySelectorAll('p, span, div:not(.flex)');
-                textElements.forEach(el => {
-                    el.style.pointerEvents = 'auto';
-                });
+            testBtn.addEventListener('click', function() {
+                console.log('Test button clicked');
+                openModal('./img/profile/awards_1.jpg');
             });
             
-            // Add direct click handlers to parent containers as backup
-            const directClickContainers = document.querySelectorAll('.achievement-card .bg-white');
-            directClickContainers.forEach((container, index) => {
-                const img = container.querySelector('img[src*="awards_"], img[src*="achievements_"]');
-                if (img) {
-                    container.addEventListener('click', function(e) {
-                        console.log(`=== CONTAINER CLICK ${index + 1} ===`);
-                        console.log('Clicked container, opening image:', img.src);
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openModal(img.src);
-                    });
-                    
-                    // Re-enable pointer events for this container since we're handling it
-                    container.style.pointerEvents = 'auto';
-                    container.style.cursor = 'pointer';
-                }
-            });
-            
-            // Add test button for modal
-            const testButton = document.createElement('button');
-            testButton.style.position = 'fixed';
-            testButton.style.top = '10px';
-            testButton.style.right = '10px';
-            testButton.style.zIndex = '10000';
-            testButton.style.padding = '10px';
-            testButton.style.backgroundColor = 'red';
-            testButton.style.color = 'white';
-            testButton.style.border = 'none';
-            testButton.style.borderRadius = '5px';
-            testButton.style.cursor = 'pointer';
-            
-            // testButton.addEventListener('click', function() {
-            //     console.log('TEST BUTTON CLICKED');
-            //     openModal('./img/profile/awards_1.jpg');
-            // });
-            
-            // document.body.appendChild(testButton);
-            
-            // Add comprehensive debugging and alternative triggers
-            document.addEventListener('click', function(e) {
-                console.log('Global click on:', e.target.tagName, e.target.src || e.target.className);
-                
-                if (e.target.tagName === 'IMG' && (e.target.src.includes('awards_') || e.target.src.includes('achievements_'))) {
-                    console.log('=== GLOBAL IMG CLICK DETECTED ===');
-                    console.log('Image:', e.target.src);
-                    e.preventDefault();
-                    e.stopPropagation();
-                    openModal(e.target.src);
-                }
-                
-                // Check if clicking near an award image
-                const clickedElement = e.target;
-                const nearbyImg = clickedElement.closest('.achievement-card')?.querySelector('img[src*="awards_"], img[src*="achievements_"]');
-                if (nearbyImg && !e.target.closest('span') && !e.target.closest('p')) {
-                    console.log('=== NEARBY IMAGE CLICK ===');
-                    console.log('Found nearby image:', nearbyImg.src);
-                    e.preventDefault();
-                    e.stopPropagation();
-                    openModal(nearbyImg.src);
-                }
-            }, true);
-            
-            // Add double-click as alternative
-            document.addEventListener('dblclick', function(e) {
-                if (e.target.tagName === 'IMG' && (e.target.src.includes('awards_') || e.target.src.includes('achievements_'))) {
-                    console.log('=== DOUBLE CLICK ON IMAGE ===');
-                    openModal(e.target.src);
-                }
-            });
-            
-            // Add visual indicators for all clickable images
-            setTimeout(() => {
-                const allAwardImages = document.querySelectorAll('img[src*="awards_"], img[src*="achievements_"]');
-                allAwardImages.forEach((img, i) => {
-                    // Add a subtle border to show they're clickable
-                    img.style.border = '2px solid transparent';
-                    img.style.borderRadius = '8px';
-                    
-                    // Add a small indicator
-                    const indicator = document.createElement('div');
-                    indicator.innerHTML = '🔍';
-                    indicator.style.position = 'absolute';
-                    indicator.style.top = '2px';
-                    indicator.style.right = '2px';
-                    indicator.style.fontSize = '12px';
-                    indicator.style.backgroundColor = 'rgba(59, 130, 246, 0.8)';
-                    indicator.style.borderRadius = '50%';
-                    indicator.style.width = '20px';
-                    indicator.style.height = '20px';
-                    indicator.style.display = 'flex';
-                    indicator.style.alignItems = 'center';
-                    indicator.style.justifyContent = 'center';
-                    indicator.style.zIndex = '1002';
-                    indicator.style.pointerEvents = 'none';
-                    
-                    // Make parent relative for absolute positioning
-                    img.parentElement.style.position = 'relative';
-                    img.parentElement.appendChild(indicator);
-                    
-                    console.log(`Added visual indicator for image ${i + 1}`);
-                });
-            }, 1000);
+            document.body.appendChild(testBtn);
         });
     </script>
 </body>
