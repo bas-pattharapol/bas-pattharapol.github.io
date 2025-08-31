@@ -1577,15 +1577,7 @@
                 });
             });
             
-            // Test modal functionality
-            console.log('Page loaded - Testing modal...');
-            
-            // Test basic modal function
-            window.testModal = function() {
-                console.log('Testing modal...');
-                openModal('./img/profile/awards_1.jpg');
-            };
-            
+        
             // Enhanced event listeners for award images
             const images = document.querySelectorAll('img[src*="awards_"], img[src*="achievements_"]');
             console.log('=== SETTING UP IMAGE CLICKS ===');
@@ -1633,26 +1625,7 @@
             
             console.log('=== IMAGE SETUP COMPLETE ===');
             
-            // Add test button temporarily
-            const testBtn = document.createElement('button');
-            testBtn.innerHTML = 'Test Modal';
-            testBtn.style.position = 'fixed';
-            testBtn.style.top = '10px';
-            testBtn.style.right = '10px';
-            testBtn.style.zIndex = '9999';
-            testBtn.style.padding = '10px';
-            testBtn.style.backgroundColor = '#3B82F6';
-            testBtn.style.color = 'white';
-            testBtn.style.border = 'none';
-            testBtn.style.borderRadius = '5px';
-            testBtn.style.cursor = 'pointer';
-            
-            testBtn.addEventListener('click', function() {
-                console.log('Test button clicked');
-                openModal('./img/profile/awards_1.jpg');
-            });
-            
-            document.body.appendChild(testBtn);
+         
         });
     </script>
 </body>
