@@ -1439,92 +1439,33 @@
 
         // Modal functions
         function openModal(imageSrc) {
-            console.log('=== Opening modal for:', imageSrc);
+            console.log('Opening modal for:', imageSrc);
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
             
-            console.log('Modal element:', modal);
-            console.log('Modal image element:', modalImg);
-            
             if (!modal || !modalImg) {
                 console.error('Modal elements not found!');
-                alert('Modal elements not found - check console');
                 return;
             }
             
-            // First completely clear and reset the image
-            modalImg.src = '';
-            modalImg.alt = '';
-            modalImg.removeAttribute('src');
-            modalImg.style.display = 'none';
-            
-            // Force browser to process the clearing
-            modalImg.offsetHeight;
-            
-            // Create a new image element to ensure fresh loading
-            const tempImg = new Image();
-            
-            // When the new image loads successfully
-            tempImg.onload = function() {
-                console.log('Image loaded successfully:', imageSrc);
-                
-                // Now set the modal image
-                modalImg.style.display = 'block';
-                modalImg.src = tempImg.src;
-                modalImg.alt = 'Award Image';
-                
-                // Show modal with fade effect
-                modal.style.display = 'block';
-                modal.style.opacity = '0';
-                
-                // Force reflow to ensure display block is applied
-                modal.offsetHeight;
-                
-                // Fade in
-                modal.style.transition = 'opacity 0.3s ease';
-                modal.style.opacity = '1';
-                
-                console.log('Modal should be visible now');
-                console.log('Modal display:', modal.style.display);
-                console.log('Image src set to:', modalImg.src);
-                
-                // Prevent body scroll
-                document.body.style.overflow = 'hidden';
-            };
-            
-            // Handle image loading errors
-            tempImg.onerror = function() {
-                console.error('Failed to load image:', imageSrc);
-                alert('ไม่สามารถโหลดรูปภาพได้: ' + imageSrc);
-            };
-            
-            // Start loading the image with cache-busting parameter
-            tempImg.src = imageSrc + '?t=' + new Date().getTime();
+            modalImg.src = imageSrc;
+            modalImg.alt = 'Project Image';
+            modal.style.display = 'block';
+            modal.style.opacity = '0';
+            modal.offsetHeight;
+            modal.style.transition = 'opacity 0.3s ease';
+            modal.style.opacity = '1';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
             if (modal) {
-                // Fade out
                 modal.style.transition = 'opacity 0.3s ease';
                 modal.style.opacity = '0';
-                
-                // Hide after fade and clear image
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    // Clear image source completely when closing
-                    if (modalImg) {
-                        modalImg.src = '';
-                        modalImg.alt = '';
-                        modalImg.removeAttribute('src');
-                    }
-                }, 300);
-                
-                // Restore body scroll
+                setTimeout(() => { modal.style.display = 'none'; }, 300);
                 document.body.style.overflow = '';
-                
-                console.log('Modal closed and image cleared');
+                console.log('Modal closed');
             }
         }
 
